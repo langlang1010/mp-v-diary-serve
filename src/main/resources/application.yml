@@ -1,0 +1,21 @@
+
+wechat:
+  appid: wx18507e9ecabec5f6
+  appsecret: 3f0a1f96a037e11a3afeff6b3dd0fd76
+
+jdbc:
+  driver: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/diary?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+  user: root
+  password: Yan1996>
+
+server:
+  port: 80
+
+#mybatis
+mybatis_config_file:   mybatis-config.xml
+mybatis_mapper_path:  /mapper/**.xml
+entity_package: cn.ailanglang.diary.entity
+
+# 分页查询
+page_num: 6

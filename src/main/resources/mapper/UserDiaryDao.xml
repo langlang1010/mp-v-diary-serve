@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ailanglang.diary.dao.UserDiaryDao">
+    <insert id="insertUserDiary"  parameterType="cn.ailanglang.diary.entity.UserDiary">
+      insert into user_diary(fk_userid,fk_diaryid)
+      values(#{fkUserid},#{fkDiaryid})
+    </insert>
+    <select id="countDiary" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(fk_diaryid)
+        from user_diary
+        where fk_userid = #{userid}
+    </select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ailanglang.diary.dao.DiaryDao">
+    <insert id="insertDiary"  parameterType="cn.ailanglang.diary.entity.Diary"
+            useGeneratedKeys="true" keyProperty="pkDiaryid">
+      insert into diary(content,gmt_create,gmt_modified,weather,mood,state)
+      values(#{content},#{gmtCreate},#{gmtModified},#{weather},#{mood},#{state})
+    </insert>
+
+    <select id="listDiary" resultType="cn.ailanglang.diary.entity.Diary">
+        select pk_diaryid,content,gmt_create,gmt_modified,weather,mood,state
+        from diary,user_diary
+        where state is null
+        and diary.pk_diaryid =  user_diary.fk_diaryid
+        and user_diary.fk_userid = #{userid}
+        order by gmt_create desc
+        limit #{page1},#{page2}
+    </select>
+
+    <update id="updateDiary" parameterType="cn.ailanglang.diary.entity.Diary">
+        update diary
+        set content=#{content},gmt_modified=#{gmtModified},
+            weather=#{weather},mood=#{mood}
+        where pk_diaryid = #{pkDiaryid}
+    </update>
+
+    <select id="listDiaryByDate" resultType="cn.ailanglang.diary.entity.Diary">
+        select pk_diaryid,content,gmt_create,gmt_modified,weather,mood,state
+        from diary,user_diary
+        where #{endDate} > diary.gmt_create
+        and diary.state is null
+        and diary.pk_diaryid =  user_diary.fk_diaryid
+        and user_diary.fk_userid = #{userid}
+        order by gmt_create desc
+        limit #{startPage},#{pageNum}
+    </select>
+
+    <update id="deleteDiary" parameterType="cn.ailanglang.diary.entity.Diary">
+         update diary
+        set state = #{state}
+        where pk_diaryid = #{pkDiaryid}
+    </update>
+
+    <select id="statisticDiary" parameterType="java.lang.Long" resultType="cn.ailanglang.diary.util.StatisticBean">
+        select
+          count(diary.pk_diaryid)  as sum,
+          sum(case when diary.mood='0' and diary.state is null then 1 else 0 end) as mood0,
+          sum(case when diary.mood='1' and diary.state is null then 1 else 0 end) as mood1,
+          sum(case when diary.mood='2' and diary.state is null then 1 else 0 end) as mood2,
+          sum(case when diary.mood='3' and diary.state is null then 1 else 0 end) as mood3,
+          sum(case when diary.weather='0' and diary.state is null then 1 else 0 end) as weather0,
+          sum(case when diary.weather='1' and diary.state is null then 1 else 0 end) as weather1,
+          sum(case when diary.weather='2' and diary.state is null then 1 else 0 end) as weather2,
+          sum(case when diary.weather='3' and diary.state is null then 1 else 0 end) as weather3,
+          sum(case when diary.weather='4' and diary.state is null then 1 else 0 end) as weather4,
+          sum(case when diary.weather='5' and diary.state is null then 1 else 0 end) as weather5,
+          sum(case when diary.weather='6' and diary.state is null then 1 else 0 end) as weather6,
+          sum(case when diary.weather='7' and diary.state is null then 1 else 0 end) as weather7,
+          sum(case when diary.state='deleted' then 1 else 0 end) as deleted
+
+        from user_diary,diary
+        where diary.pk_diaryid = user_diary.fk_diaryid
+        and user_diary.fk_userid = #{userid};
+
+    </select>
+</mapper>

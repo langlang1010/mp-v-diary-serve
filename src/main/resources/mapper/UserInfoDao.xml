@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ailanglang.diary.dao.UserInfoDao">
+    <insert id="insertUserInfo"  parameterType="cn.ailanglang.diary.entity.UserInfo">
+      insert into user_info( pk_userid, openid, nickname, gender, city, province, country, avatarUrl, gmt_create, gmt_modified)
+      values (#{pkUserid},#{openid},#{nickname},#{gender},#{city},#{province},#{country},#{avatarUrl},#{gmtCreate},#{gmtModified})
+    </insert>
+    <select id="getUseridByOpenid" parameterType="java.lang.String" resultType="java.lang.Long">
+        select pk_userid
+        from user_info
+        where openid = #{openid}
+    </select>
+    <select id="getUserInfoByUserid" parameterType="java.lang.Long" resultType="cn.ailanglang.diary.entity.UserInfo">
+        select pk_userid,openid,nickname,gender,city,province,country,avatarUrl,gmt_create,gmt_modified
+        from user_info
+        where pk_userid = #{userid}
+    </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ailanglang.diary.dao.UserDao">
+    <select id="getUserById" resultType="cn.ailanglang.diary.entity.User">
+        select password,uk_phone,gmt_create,gmt_modified,role
+        from user
+        WHERE pk_userid = #{userid}
+    </select>
+
+    <insert id="insertUser"  parameterType="cn.ailanglang.diary.entity.User"
+            useGeneratedKeys="true" keyProperty="pkUserid">
+      insert into user(password,uk_phone,gmt_create,gmt_modified,role)
+      values(#{password},#{ukPhone},#{gmtCreate},#{gmtModified},#{role})
+    </insert>
+</mapper>
